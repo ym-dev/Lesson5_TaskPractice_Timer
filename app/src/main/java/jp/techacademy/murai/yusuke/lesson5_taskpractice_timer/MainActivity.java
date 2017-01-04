@@ -4,17 +4,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import java.util.Timer;
 import java.util.TimerTask;
-import android.view.Menu;
+
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.os.Handler;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Timer mainTimer;					//タイマー用
-    private MainTimerTask mainTimerTask;		//タイマタスククラス
-    private TextView countText;					//テキストビュー
-    private int count = 0;						//カウント
-    private Handler mHandler = new Handler();   //UI Threadへのpost用ハンドラ
+    Timer mainTimer;					//タイマー用
+    MainTimerTask mainTimerTask;		//タイマタスククラス
+    TextView countText;					//テキストビュー
+    Button m_stopButton;                //ボタン
+    int count = 0;						//カウント
+    Handler mHandler = new Handler();   //UI Threadへのpost用ハンドラ
 
 
     @Override
@@ -30,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
         this.mainTimer.schedule(mainTimerTask, 0,2000);
         //テキストビュー
         this.countText = (TextView)findViewById(R.id.count_text);
+        //STOPボタン
+        m_stopButton = (Button) findViewById(R.id.stopButton);
+        m_stopButton.setOnClickListener(new StopClickListener());
 
     }
 
@@ -52,6 +58,12 @@ public class MainActivity extends AppCompatActivity {
                     countText.setText(String.valueOf(count));
                 }
             });
+        }
+    }
+
+    private class StopClickListener implements View.OnClickListener {
+        public void onClick(View v){
+            mainTimer.cancel();
         }
     }
 }
