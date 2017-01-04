@@ -1,10 +1,12 @@
 package jp.techacademy.murai.yusuke.lesson5_taskpractice_timer;
 
+import android.support.annotation.IntegerRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -30,11 +32,12 @@ public class MainActivity extends AppCompatActivity {
         //タスククラスインスタンス生成
         this.mainTimerTask = new MainTimerTask();
         //タイマースケジュール設定＆開始
-        this.mainTimer.schedule(mainTimerTask, 0,500);
+        this.mainTimer.schedule(mainTimerTask, 0,100);
         //テキストビュー
         this.countText = (TextView)findViewById(R.id.count_text);
         //STOPボタン
         m_stopButton = (Button) findViewById(R.id.stopButton);
+        m_stopButton.setTag(0);
         m_stopButton.setOnClickListener(new StopClickListener());
 
     }
@@ -71,7 +74,28 @@ public class MainActivity extends AppCompatActivity {
 
     private class StopClickListener implements View.OnClickListener {
         public void onClick(View v){
-            mainTimer.cancel();
+
+            switch ((Integer)v.getTag()) {
+                case 0:
+                    Log.d("javatest", "getTag=0");
+                    mainTimer.cancel();
+                    m_stopButton.setText("PLAY");
+                    m_stopButton.setTag(1);
+                    break;
+                case 1:
+                    Log.d("javatest", "getTag=1");
+                    mainTimer = new Timer();        //一度CancelしたTimerは再度newしないと駄目。
+                    mainTimerTask = new MainTimerTask();
+                    mainTimer.schedule(mainTimerTask, 0,1000);
+                    m_stopButton.setText("STOP");
+                    m_stopButton.setTag(0);
+                    break;
+                default:
+                    Log.d("javatest", "getTag=0,1以外");
+                    break;
+            }
+
+
         }
     }
 }
