@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         //タスククラスインスタンス生成
         this.mainTimerTask = new MainTimerTask();
         //タイマースケジュール設定＆開始
-        this.mainTimer.schedule(mainTimerTask, 0,2000);
+        this.mainTimer.schedule(mainTimerTask, 0,500);
         //テキストビュー
         this.countText = (TextView)findViewById(R.id.count_text);
         //STOPボタン
@@ -46,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
 //     *
 
     public class MainTimerTask extends TimerTask {
+
+        int countMax = 5;
+
         @Override
         public void run() {
             //ここに定周期で実行したい処理を記述します
@@ -56,6 +59,11 @@ public class MainActivity extends AppCompatActivity {
                     count += 1;
                     //画面にカウントを表示
                     countText.setText(String.valueOf(count));
+
+                    //カウンタをcountMaxで0に戻す
+                    if (count == countMax){
+                        count = 0;
+                    }
                 }
             });
         }
